@@ -100,7 +100,29 @@ const main = async () => {
   console.log(
     ethers.formatUnits(String(await pairInteract.balanceOf(TokenHolder)))
   );
+  const txVal = ethers.parseEther("20");
 
+  const tx = await pairInteract.transfer(TokenHolder, txVal);
+
+  console.log(
+    ethers.formatUnits(String(await pairInteract.balanceOf(TokenHolder)))
+  );
+
+  await tx.wait();
+
+  const liquidityAmount = ethers.parseUnits("10", "18");
+
+  await uniswap
+    .connect(tokenSigner)
+    .removeLiquidity(
+      usdt,
+      quant,
+      liquidityAmount,
+      minAmtA,
+      minAmtA,
+      to,
+      deadline
+    );
   // const pairBalance = await pairAddr.balanceof(TokenHolder);
   // await uniswap.connect(tokenSigner).transfer(to, tfVal);
 };
